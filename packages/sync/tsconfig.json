@@ -2,8 +2,14 @@
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         "rootDir": "./src",
-        "outDir": "./dist"
+        "outDir": "./dist",
+        "composite": true
     },
+    "references": [
+        {
+            "path": "../transformer"
+        }
+    ],
     "include": [
         "src/**/*"
     ],
