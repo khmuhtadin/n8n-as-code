@@ -21,8 +21,14 @@ export class AiContextGenerator {
     this.injectOrUpdate(path.join(projectRoot, 'AGENTS.md'), agentsContent, true);
 
     // 2. Local Shim and Gitignore
-    this.generateShim(projectRoot, extensionPath);
-    this.updateGitignore(projectRoot);
+    // Only generate local shims/gitignore entries when the VS Code extension
+    // provides an explicit extension path. This prevents the CLI from
+    // creating local executable shims when the skills CLI is installed
+    // independently (via npm/yarn) or when users prefer to use `npx`.
+    if (extensionPath) {
+      this.generateShim(projectRoot, extensionPath);
+      this.updateGitignore(projectRoot);
+    }
   }
 
   private generateShim(projectRoot: string, extensionPath?: string): void {

@@ -32,6 +32,8 @@ npx @n8n-as-code/skills <command>
 npm install -g @n8n-as-code/skills
 ```
 
+Note: When you run `update-ai` from the main `@n8n-as-code/cli`, ensure `@n8n-as-code/skills` is available to the project (install locally with `npm install --save-dev @n8n-as-code/skills`, install globally, or use `npx`). The VS Code extension is the only caller that generates local executable shims (`n8nac`, `n8nac-skills`) in your project; the CLI will not create these shims to avoid unexpected file creation.
+
 ## 🛠️ Available Commands
 
 ### 1. Search Nodes

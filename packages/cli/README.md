@@ -103,10 +103,22 @@ n8nac resolve --workflowsid <id> --mode keep-incoming   # Force-pull remote vers
 ---
 
 ### `update-ai`
-Generate or refresh AI context files in the project root:
-- `AGENTS.md` — instructions for AI agents
-- `n8nac-skills` / `n8nac-skills.cmd` — local shim for the skills CLI
-- `n8nac` / `n8nac.cmd` — local shim for this CLI
+Generate or refresh AI context files in the project root. This command will create `AGENTS.md` and VS Code snippets (when possible).
+
+Note: to run skills-related tooling locally you must have `@n8n-as-code/skills` available in your environment. Install it into your project or globally, or run via `npx`:
+
+```bash
+# Install locally as dev dependency
+npm install --save-dev @n8n-as-code/skills
+
+# Or install globally
+npm install -g @n8n-as-code/skills
+
+# Or run via npx
+npx @n8n-as-code/skills update-ai
+```
+
+The CLI will not create local executable shims in the project root when invoked directly. Shims such as `n8nac` / `n8nac.cmd` and `n8nac-skills` are only generated when `update-ai` is executed by the VS Code extension (the extension provides its installation path to create safe, versioned shims). This avoids surprising file creation in projects where the skills CLI is installed independently.
 
 ```bash
 n8nac update-ai
