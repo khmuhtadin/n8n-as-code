@@ -10,6 +10,8 @@ This package provides the core transformation engine that converts:
 - **JSON → TypeScript**: n8n workflow JSON (from API) → TypeScript class with decorators
 - **TypeScript → JSON**: TypeScript workflow class → n8n workflow JSON (for API)
 
+It is the shared foundation consumed by the CLI, the skills package, and the VS Code extension.
+
 ## Features
 
 - ✅ **Bidirectional transformation** with roundtrip support

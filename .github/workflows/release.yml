@@ -170,8 +170,70 @@ jobs:
               execFileSync('git', ['tag', tag], { stdio: 'inherit' });
             }
           }
+
+          const releasePkg = plan.packages.find(pkg => pkg.name === 'n8n-as-code' && pkg.changed);
+          if (releasePkg) {
+            const repoTag = `v${releasePkg.targetVersion}`;
+            try {
+              execFileSync('git', ['rev-parse', '-q', '--verify', `refs/tags/${repoTag}`], { stdio: 'ignore' });
+            } catch {
+              execFileSync('git', ['tag', repoTag], { stdio: 'inherit' });
+            }
+          }
           NODE
           git push origin --tags
+
+      - name: Build GitHub release metadata
+        if: steps.pending.outputs.pending == 'true'
+        id: github-release
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+
+          const plan = JSON.parse(fs.readFileSync('release-plan.json', 'utf8'));
+          const pkg = plan.packages.find(item => item.name === 'n8n-as-code');
+
+          if (!pkg?.changed) {
+            fs.writeFileSync('github-release-meta.json', JSON.stringify({ publish: false }, null, 2));
+            process.exit(0);
+          }
+
+          const version = pkg.targetVersion;
+          const tag = `v${version}`;
+          const title = version === '1.0.0'
+            ? "🚀 v1.0.0 - The 'State of the Art' Release"
+            : `n8n as code v${version}`;
+
+          const changelog = fs.readFileSync('packages/vscode-extension/CHANGELOG.md', 'utf8');
+          const escapedVersion = version.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const match = changelog.match(new RegExp(`## \\[${escapedVersion}\\][\\s\\S]*?(?=\\n## \\[|$)`));
+          const notes = match?.[0]?.trim() || `Release ${version}`;
+
+          fs.writeFileSync('github-release-notes.md', `${notes}\n`);
+          fs.writeFileSync('github-release-meta.json', JSON.stringify({
+            publish: true,
+            tag,
+            title,
+          }, null, 2));
+          NODE
+
+          PUBLISH=$(node -p "require('./github-release-meta.json').publish ? 'true' : 'false'")
+          echo "publish=$PUBLISH" >> "$GITHUB_OUTPUT"
+          if [[ "$PUBLISH" == 'true' ]]; then
+            TAG=$(node -p "require('./github-release-meta.json').tag")
+            TITLE=$(node -p "require('./github-release-meta.json').title")
+            echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+            echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish GitHub release
+        if: steps.pending.outputs.pending == 'true' && steps.github-release.outputs.publish == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.github-release.outputs.tag }}
+          name: ${{ steps.github-release.outputs.title }}
+          body_path: github-release-notes.md
+          make_latest: true
 
       - name: Sync next to main
         if: steps.pending.outputs.pending == 'true'
