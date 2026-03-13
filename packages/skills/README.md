@@ -1,10 +1,14 @@
 # <img src="https://raw.githubusercontent.com/EtienneLescot/n8n-as-code/main/res/logo.png" alt="n8n-as-code logo" width="32" height="32"> @n8n-as-code/skills
 
+**The AI skill layer that gives coding agents n8n superpowers.**
+
+This package powers the shared n8n ontology behind `n8n-as-code`: searchable nodes, documentation, workflow examples, validation, and generated `AGENTS.md` context for coding agents.
+
 > **⚠️ BREAKING CHANGE (v0.16.0)**: Workflows are now generated and documented in **TypeScript format** (`.workflow.ts`) instead of JSON for better AI compatibility and readability.
 
 > **📌 Internal Library** — This package is not meant to be used directly. Public access is via [`n8nac`](https://www.npmjs.com/package/n8nac): `npx n8nac skills <command>`.
 
-Specialized tooling for AI Agents (Cursor, Cline, Copilot) to interact with n8n workflows and nodes.
+Specialized tooling for AI agents across Copilot, Cursor, Windsurf, Claude Code, and related editor or CLI workflows.
 
 ## 🛠 Purpose
 

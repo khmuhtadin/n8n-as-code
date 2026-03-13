@@ -1,6 +1,8 @@
 # @n8n-as-code/openclaw-plugin
 
-**OpenClaw plugin for n8n-as-code.** Ask OpenClaw to build, update and manage n8n workflows using the `n8nac` CLI as its backend.
+**OpenClaw-native access to the `n8n-as-code` workflow stack.**
+
+Use OpenClaw to build, update, validate, and manage n8n workflows with the same `n8nac` CLI and AI context model used across the wider `n8n-as-code` project.
 
 ## Install
 

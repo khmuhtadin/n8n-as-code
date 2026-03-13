@@ -1,6 +1,10 @@
-# <img src="https://raw.githubusercontent.com/EtienneLescot/n8n-as-code/main/res/logo.png" alt="n8n-as-code logo" width="32" height="32"> n8n-as-code : VS Code Extension
+# <img src="https://raw.githubusercontent.com/EtienneLescot/n8n-as-code/main/res/logo.png" alt="n8n-as-code logo" width="32" height="32"> n8n-as-code
 
-**n8n-as-code** transforms VS Code into a powerful IDE for your n8n workflows. Your automations become code: Git versioning, AI-assisted editing, and seamless synchronization.
+**The AI skill and editor integration that gives your coding agent n8n superpowers.**
+
+`n8n-as-code` turns compatible editors into a GitOps and AI workspace for n8n workflows: pull from n8n, edit locally, search nodes and templates instantly, validate before deploy, and push changes back with full control.
+
+Published for both the Microsoft Marketplace and Open VSX.
 
 ![n8n-as-code demo](https://raw.githubusercontent.com/EtienneLescot/n8n-as-code/main/res/n8n-as-code.gif)
 
@@ -8,55 +12,72 @@
 
 ## ⚡ Quick Start
 
-1.  **Installation**: Install the extension from the Marketplace.
-2.  **Workspace**: Open a folder or a `.code-workspace` in VS Code before initialization. The extension requires an active workspace to index files and settings.
-3.  **Connection**: Click the **n8n** icon in the Activity Bar, then click the **Gear (⚙️)** or the configure button to configure your `Host` and `API Key`. Your projects load automatically, with the Personal project pre-selected by default.
-4.  **Import**: Use the refresh button (**Refresh**) to see your existing workflows.
+1. Install `n8n-as-code` from the Microsoft Marketplace or Open VSX.
+2. Open a folder or `.code-workspace` before initialization.
+3. Open the `n8n` view, configure your `Host` and `API Key`, then select the target project.
+4. Refresh the explorer to list your workflows and start syncing.
+
+Marketplace links:
+
+- Microsoft Marketplace: https://marketplace.visualstudio.com/items?itemName=etienne-lescot.n8n-as-code
+- Open VSX: https://open-vsx.org/extension/etienne-lescot/n8n-as-code
 
 ---
 
-## 🎨 Features
+## What You Get
 
-### 🔄 Git-like Synchronization
-The extension follows a git-like model: **List**, **Pull**, and **Push**. You have full control over when changes are synchronized.
+### GitOps for n8n
+Use a deliberate pull, edit, validate, push workflow instead of editing directly in the browser. `n8n-as-code` keeps local files and the remote n8n instance aligned without hiding sync decisions from you.
 
-### 🛡️ Conflict Management
-The system intelligently detects conflicts to prevent data loss:
-- **Protection**: If a workflow is edited simultaneously on n8n and locally, synchronization stops.
-- **Resolution**: An interface allows you to compare versions (Diff View) and choose which one to keep (Force Push/Pull).
+### Built-in AI Context
+The editor integration is backed by the shared `n8nac` CLI and `@n8n-as-code/skills` package, so agents can work with the same embedded n8n ontology used across the broader project:
 
-### 🔎 Fast Workflow Finder
-Use **Find Workflow** from the n8n view or Command Palette to jump straight to a workflow by partial name, workflow ID, or local filename instead of scrolling long trees.
+- JSON schema validation for live feedback
+- snippets for common nodes and workflow patterns
+- `AGENTS.md` generation for Copilot, Cursor, Windsurf, Claude Code, and similar tools
+- local search across nodes, docs, and workflow templates
 
-### 🗂️ Multi-Instance Support
-Your workflows are automatically organized by instance to avoid mixing files from different environments:
-`workflows/instance_name_user/my_workflow.json`
+### Workflow Search
+Use `Find Workflow` from the n8n view or Command Palette to jump straight to a workflow by partial name, workflow ID, or local filename instead of scrolling long trees.
 
-### 🤖 Built-in AI Assistance
-Your environment is automatically configured for AI upon opening:
--   **JSON Validation**: n8n schema applied for input assistance and live error detection.
--   **Snippet Library**: Ready-to-use node templates (`node:webhook`, `node:code`, etc.).
--   **`AGENTS.md` Context**: Automated documentation generated using `@n8n-as-code/skills` so that Cline, Cursor, Windsurf, or Copilot can master your workflow structure.
+### Conflict Protection
+If a workflow diverges locally and remotely, synchronization pauses instead of guessing. You can inspect the diff and decide whether to keep the local or remote version.
 
-### 🛠️ Integrated Tooling
-The extension leverages the `@n8n-as-code/skills` package to:
-- **Index Nodes**: Pre-generate a searchable index of available n8n nodes.
-- **AI Initialization**: Power the `n8n.initializeAI` command to bootstrap your environment with relevant context.
+### Split View
+Open a live split view to compare the code and the n8n canvas while you edit. This is useful for validating structural changes before you push.
 
-### 🍱 Split View
-Visualize the n8n canvas in real-time using the integrated Webview while editing the JSON code. This is the ideal interface for visually validating your structural changes.
+### Multi-Instance Workspace Layout
+Workflows are grouped by instance and project so multiple environments can coexist cleanly in the same workspace.
+
+### Shared Product Surface
+This editor distribution is one entry point into the wider `n8n-as-code` product surface:
+
+- editor integration via Microsoft Marketplace and Open VSX
+- `n8nac` CLI for direct terminal workflows
+- AI skills for coding agents
+- Claude Code and OpenClaw integrations in the monorepo
 
 ---
 
 ## ⚙️ Configuration
 
-The extension uses native VS Code settings (accessible via the Gear ⚙️):
+The extension uses native editor settings:
 
 | Parameter | Description | Default |
 | :--- | :--- | :--- |
 | `n8n.host` | URL of your n8n instance | - |
 | `n8n.apiKey` | Your n8n API Key | - |
 | `n8n.syncFolder` | Local storage folder | `workflows` |
+
+## Philosophy
+
+`n8n-as-code` is not a browser companion. It is a local-first workflow environment for n8n.
+
+- your agent works from real local files
+- the n8n schema and docs are available offline in the installed assets
+- sync is explicit, reviewable, and Git-friendly
+
+That is why the same project can power editor workflows, CLI automation, Claude integrations, and OpenClaw without changing the underlying mental model.
 
 ---
 

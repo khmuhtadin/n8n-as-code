@@ -103,6 +103,7 @@ const CHANGELOG_SECTION_TITLES = new Map([
   ['major', '### ⚠ BREAKING CHANGES'],
   ['minor', '### Features'],
   ['patch', '### Bug Fixes'],
+  ['docs', '### Documentation'],
 ]);
 
 const COMMIT_SECTION_BY_TYPE = new Map([
@@ -113,6 +114,7 @@ const COMMIT_SECTION_BY_TYPE = new Map([
   ['revert', 'patch'],
   ['deps', 'patch'],
   ['build', 'patch'],
+  ['docs', 'docs'],
 ]);
 
 function git(args) {
@@ -436,6 +438,7 @@ function groupCommitsForChangelog(commits) {
     major: [],
     minor: [],
     patch: [],
+    docs: [],
   };
 
   for (const commit of commits) {

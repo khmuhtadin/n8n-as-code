@@ -210,10 +210,54 @@ jobs:
 
           const plan = JSON.parse(fs.readFileSync('release-plan.json', 'utf8'));
           const pkg = plan.packages.find(item => item.name === 'n8n-as-code');
+          const changedPackages = plan.packages.filter(item => item.changed);
 
           if (!pkg?.changed) {
             fs.writeFileSync('github-release-meta.json', JSON.stringify({ publish: false }, null, 2));
             process.exit(0);
+          }
+
+          const packageMeta = new Map([
+            ['n8n-as-code', {
+              label: 'Editor Integrations',
+              summary: 'Marketplace and Open VSX editor integration for browsing, searching, syncing, and validating n8n workflows.',
+            }],
+            ['n8nac', {
+              label: 'CLI',
+              summary: 'Shared command-line backbone for workspace bootstrap, GitOps sync, search, and automation.',
+            }],
+            ['@n8n-as-code/skills', {
+              label: 'AI Skills and Claude Integration',
+              summary: 'Embedded n8n ontology, AGENTS.md generation, and Claude-oriented workflow tooling.',
+            }],
+            ['@n8n-as-code/transformer', {
+              label: 'TypeScript Transformer',
+              summary: 'Decorator-based round-trip conversion between n8n JSON and TypeScript workflows.',
+            }],
+            ['@n8n-as-code/openclaw-plugin', {
+              label: 'OpenClaw Plugin',
+              summary: 'Native OpenClaw setup and workflow operations powered by the same n8nac stack.',
+            }],
+          ]);
+
+          function escapeRegExp(value) {
+            return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          }
+
+          function extractChangelogSection(changelog, version) {
+            const escapedVersion = escapeRegExp(version);
+            return changelog.match(new RegExp(`## \\[${escapedVersion}\\][\\s\\S]*?(?=\\n## \\[|$)`))?.[0]?.trim() || '';
+          }
+
+          function stripSectionTitle(section) {
+            const lines = section.split('\n');
+            if (lines[0]?.startsWith('## [')) {
+              lines.shift();
+            }
+            while (lines[0] === '') {
+              lines.shift();
+            }
+            return lines.join('\n').trim();
           }
 
           const version = pkg.targetVersion;
@@ -222,10 +266,46 @@ jobs:
             ? "🚀 v1.0.0 - The 'State of the Art' Release"
             : `n8n as code v${version}`;
 
-          const changelog = fs.readFileSync('packages/vscode-extension/CHANGELOG.md', 'utf8');
-          const escapedVersion = version.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          const match = changelog.match(new RegExp(`## \\[${escapedVersion}\\][\\s\\S]*?(?=\\n## \\[|$)`));
-          const notes = match?.[0]?.trim() || `Release ${version}`;
+          const notesLines = [
+            `## n8n-as-code ${version}`,
+            '',
+            '### Product Surface',
+            '',
+            '- Editor integrations published via Microsoft Marketplace and Open VSX',
+            '- Shared n8nac CLI for workspace bootstrap, sync, and automation',
+            '- AI Skills and Claude-ready agent context generation',
+            '- OpenClaw plugin support',
+            '- TypeScript transformer for n8n workflow code',
+            '',
+            '### Included in this release',
+            '',
+            ...changedPackages.map(item => {
+              const meta = packageMeta.get(item.name);
+              return `- ${meta?.label || item.name}: ${item.currentVersion} -> ${item.targetVersion}`;
+            }),
+            '',
+          ];
+
+          for (const item of changedPackages) {
+            const meta = packageMeta.get(item.name);
+            const changelog = fs.readFileSync(item.changelogPath, 'utf8');
+            const section = stripSectionTitle(extractChangelogSection(changelog, item.targetVersion));
+
+            notesLines.push(`## ${meta?.label || item.name}`);
+            notesLines.push('');
+            notesLines.push(`Package: ${item.name}@${item.targetVersion}`);
+            notesLines.push('');
+            if (meta?.summary) {
+              notesLines.push(meta.summary);
+              notesLines.push('');
+            }
+            if (section) {
+              notesLines.push(section);
+              notesLines.push('');
+            }
+          }
+
+          const notes = `${notesLines.join('\n').trim()}\n`;
 
           fs.writeFileSync('github-release-notes.md', `${notes}\n`);
           fs.writeFileSync('github-release-meta.json', JSON.stringify({
