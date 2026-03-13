@@ -1,12 +1,17 @@
 ---
-sidebar_position: 3
-title: Skills Commands (Tools for AI agents)
-description: Use the Skills CLI to search n8n nodes, get JSON schemas, and list available nodes for AI coding assistants.
+sidebar_position: 99
+title: Skills CLI Reference
+description: Reference for the n8nac skills subcommands used by AI agents behind the scenes.
+unlisted: true
 ---
 
-# Skills CLI (Tools for AI agents)
+# Skills CLI Reference
 
-The Skills CLI (`n8nac`) provides command-line tools specifically designed for AI coding assistants and developers working with n8n workflows. It allows you to search, retrieve, and list n8n node schemas programmatically.
+:::tip
+This page documents the low-level `n8nac skills` commands that AI agents use behind the scenes. As a user, you don't need to call these directly — the [Claude Plugin](/docs/usage/claude-plugin), [OpenClaw Plugin](/docs/usage/openclaw), and [VS Code Extension](/docs/usage/vscode-extension) invoke them automatically.
+
+If you're a contributor or power user, the full reference is in [Contribution → Skills & AI Tools](/docs/contribution/skills).
+:::
 
 ## 🎯 Purpose
 

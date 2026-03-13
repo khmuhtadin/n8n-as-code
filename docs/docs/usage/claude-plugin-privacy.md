@@ -1,7 +1,7 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 title: Claude Plugin Privacy Policy
-description: Privacy policy for the n8n-as-code Claude plugin and related skill distribution.
+description: Privacy policy for the n8n-as-code Claude plugin.
 ---
 
 # Claude Plugin Privacy Policy

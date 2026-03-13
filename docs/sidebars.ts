@@ -11,37 +11,32 @@ const sidebars: SidebarsConfig = {
       label: 'Home',
     },
     {
-      type: 'category',
+      type: 'doc',
+      id: 'getting-started/index',
       label: 'Getting Started',
-      link: {
-        type: 'generated-index',
-        title: 'Getting Started',
-        description: 'Learn how to get started with n8n-as-code in just a few minutes.',
-        slug: '/docs/getting-started',
-      },
-      items: [
-        'getting-started/index',
-      ],
     },
     {
       type: 'category',
       label: 'Usage',
       link: {
-        type: 'generated-index',
-        title: 'Usage Guides',
-        description: 'Learn how to use n8n-as-code with different tools and workflows.',
-        slug: '/docs/usage',
+        type: 'doc',
+        id: 'usage/index',
       },
       items: [
         {
           type: 'doc',
-          id: 'usage/index',
-          label: 'Overview',
+          id: 'usage/vscode-extension',
+          label: 'VS Code Extension',
         },
         {
           type: 'doc',
-          id: 'usage/vscode-extension',
-          label: 'VS Code Extension',
+          id: 'usage/claude-plugin',
+          label: 'Claude Plugin',
+        },
+        {
+          type: 'doc',
+          id: 'usage/openclaw',
+          label: 'OpenClaw Plugin',
         },
         {
           type: 'doc',
@@ -50,23 +45,8 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: 'doc',
-          id: 'usage/skills',
-          label: 'Skills (AI Tools)',
-        },
-        {
-          type: 'doc',
           id: 'usage/typescript-workflows',
           label: 'TypeScript Workflows',
-        },
-        {
-          type: 'doc',
-          id: 'usage/claude-skill',
-          label: 'Claude Plugin',
-        },
-        {
-          type: 'doc',
-          id: 'usage/openclaw',
-          label: 'OpenClaw Plugin',
         },
         {
           type: 'doc',
@@ -94,7 +74,7 @@ const sidebars: SidebarsConfig = {
         {
           type: 'doc',
           id: 'contribution/sync',
-          label: 'Sync Package',
+          label: 'Sync Engine',
         },
         {
           type: 'doc',
@@ -109,7 +89,7 @@ const sidebars: SidebarsConfig = {
         {
           type: 'doc',
           id: 'contribution/skills',
-          label: 'Skills Package',
+          label: 'Skills & AI Tools',
         },
         {
           type: 'doc',
@@ -119,11 +99,9 @@ const sidebars: SidebarsConfig = {
       ],
     },
     {
-      type: 'category',
+      type: 'doc',
+      id: 'community/index',
       label: 'Community',
-      items: [
-        'community/index',
-      ],
     },
     {
       type: 'doc',

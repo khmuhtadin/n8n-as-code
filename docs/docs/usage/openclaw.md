@@ -96,38 +96,20 @@ npx --yes n8nac update-ai
 
 That keeps OpenClaw aligned with the CLI, VS Code extension, and Claude plugin instead of inventing a separate sync path.
 
-## Local Development
+## Troubleshooting
 
-If you are iterating on the plugin from this monorepo, link the local source tree instead of installing from npm:
+See the [OpenClaw section](/docs/troubleshooting#openclaw-plugin) in the Troubleshooting guide.
 
-```bash
-openclaw plugins install --link /home/etienne/repos/n8n-as-code/plugins/openclaw/n8n-as-code
-```
-
-Then restart the gateway after code changes:
-
-```bash
-openclaw gateway restart
-```
-
-Useful checks while developing:
-
-```bash
-openclaw plugins info n8nac
-openclaw n8nac:status
-tail -f ~/.openclaw/logs/openclaw-$(date +%Y-%m-%d).log | grep n8nac
-```
-
-To reset the OpenClaw workspace and start over:
+To reset the workspace and start over:
 
 ```bash
 rm -rf ~/.openclaw/n8nac
 openclaw n8nac:setup
+openclaw gateway restart
 ```
 
-## Related Guides
+## Related
 
 - [Getting Started](/docs/getting-started)
-- [Claude Plugin](/docs/usage/claude-skill)
+- [Claude Plugin](/docs/usage/claude-plugin)
 - [CLI Guide](/docs/usage/cli)
-- [Skills Guide](/docs/usage/skills)

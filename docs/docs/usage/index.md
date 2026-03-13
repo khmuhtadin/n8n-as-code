@@ -1,199 +1,63 @@
 ---
 sidebar_position: 1
-title: Usage Guides
-description: Learn how to use n8n-as-code with VS Code, Claude Code, OpenClaw, and the CLI. Guides for visual editing, automation, and workflow management.
+title: Usage
+description: Guides for using n8n-as-code with VS Code, Claude, OpenClaw, and the CLI.
 ---
 
-# Usage Guides
+# Usage
 
-Welcome to the n8n-as-code usage guides. This section provides detailed instructions for using the primary tools in the n8n-as-code ecosystem.
+n8n-as-code gives you several ways to work with your n8n workflows locally. Pick the one that fits your workflow best.
 
-## 🎯 What You'll Find Here
+## VS Code Extension
 
-This section is organized by the primary user-facing tools:
+The most complete experience. Install the extension in VS Code or Cursor, connect to your n8n instance, and manage everything from the sidebar.
 
-| Tool | Purpose | Best For |
-|------|---------|----------|
-| **[VS Code Extension](/docs/usage/vscode-extension)** | Integrated development environment | Visual editing, git-like sync, workflow validation |
-| **[CLI](/docs/usage/cli)** | Command-line interface | Automation, scripting, CI/CD integration |
-| **[Skills CLI](/docs/usage/skills)** | AI tools and node schemas | AI coding assistants, node search, schema retrieval |
-| **[Claude Plugin](/docs/usage/claude-skill)** | Claude Code plugin | High-level workflow creation, updates, and fixes through Claude |
-| **[OpenClaw Plugin](/docs/usage/openclaw)** | OpenClaw plugin | Workspace bootstrap, prompt grounding, and workflow operations inside OpenClaw |
+- Tree view with sync status for every workflow
+- Right-click to pull, push, or resolve conflicts
+- Split view: code editor + n8n canvas side by side
+- JSON validation and code snippets
 
-## 🎨 Choosing the Right Tool
+[**VS Code Extension Guide →**](/docs/usage/vscode-extension)
 
-### For Visual Workflow Editing (Recommended)
-Use the **VS Code Extension** if you:
-- Prefer a visual interface with split-view editing
-- Want git-like synchronization (push/pull/fetch) with explicit control
-- Need workflow validation and schema checking
-- Work primarily in VS Code for development
-- Want to see n8n canvas preview while editing JSON
+## Claude Plugin
 
-### For Automation and Scripting
-Use the **CLI** if you:
-- Need to automate workflow management tasks
-- Want to integrate with CI/CD pipelines
-- Prefer working in the terminal
-- Need to script bulk operations
-- Want to run n8n-as-code in headless environments
+Let Claude create, edit, and fix workflows for you. Install the plugin in Claude Code or set up the MCP server for Claude Desktop — then just describe what you want.
 
-## 🔄 Common Workflows
+- Natural language workflow creation and editing
+- Automatic node lookup from 500+ schemas
+- Handles init, pull, push behind the scenes
 
-### Basic Workflow Management with VS Code
+[**Claude Plugin Guide →**](/docs/usage/claude-plugin)
 
-```mermaid
-graph LR
-    A[Install Extension] --> B[Configure Connection]
-    B --> C[Fetch & Pull Workflows]
-    C --> D[Edit in Split View]
-    D --> E[Push to n8n via Context Menu]
-    E --> F[Version Control with Git]
-```
+## OpenClaw Plugin
 
-### Automation Pipeline with CLI
+Same AI-powered workflow experience inside OpenClaw. Install the plugin, run the setup wizard, and ask for workflow changes in plain language.
 
-```mermaid
-graph LR
-    A[Git Push] --> B[CI/CD Pipeline]
-    B --> C[Run Tests]
-    C --> D[Validate JSON]
-    D --> E[Push to n8n]
-    E --> F[Deploy to Production]
-```
+[**OpenClaw Plugin Guide →**](/docs/usage/openclaw)
 
-## 🛠️ Integration Examples
+## CLI
 
-### VS Code + Git Integration
+The command-line interface for terminal users, scripts, and CI/CD pipelines. All sync operations available as explicit commands.
 
-1. **Edit workflows** in VS Code with git-like sync controls
-2. **Push changes** to n8n via the context menu
-3. **Commit changes** to Git for version control
-3. **Review changes** using Git diff
-4. **Collaborate** with team members via Git
-5. **Deploy** using CI/CD pipelines
+- `n8nac init` / `list` / `pull` / `push` / `resolve`
+- Workflow format conversion (JSON ↔ TypeScript)
+- AI context generation (`update-ai`)
 
-### CLI + Automation Scripts
+[**CLI Guide →**](/docs/usage/cli)
 
-```bash
-#!/bin/bash
-# Example automation script for CI/CD
+## TypeScript Workflows
 
-# List available workflows on source instance
-n8nac list
+An optional decorator-based format that makes workflows more readable and AI-friendly. Works alongside the standard JSON format — convert back and forth at any time.
 
-# Pull the specific workflows you need
-n8nac pull <workflowId>
+[**TypeScript Workflows Guide →**](/docs/usage/typescript-workflows)
 
-# Validate JSON syntax (using jq or other tools)
-find workflows/ -name "*.json" -exec jq . {} >/dev/null 2>&1 \;
+## Common Commands Reference
 
-# Push to target environment
-export N8N_HOST="https://target.n8n.example.com"
-export N8N_API_KEY="$TARGET_API_KEY"
-n8nac init
-n8nac push workflows/instance/project/workflow.workflow.ts
-```
-
-## 📚 Quick Reference
-
-### Common Commands
-
-| Command | Description | Tool |
-|---------|-------------|------|
-| `n8nac init` | Configure host/key and select project | CLI |
-| `n8nac switch` | Switch active project | CLI |
-| `n8nac list` | Show workflow status with filtering | CLI |
-| `n8nac pull` | Download workflows from n8n | CLI |
-| `n8nac push` | Upload workflows to n8n | CLI |
-| `n8nac update-ai` | Generate AI context files | CLI |
-| `npx @n8n-as-code/skills search` | Search for n8n nodes | Skills CLI |
-| `npx @n8n-as-code/skills get` | Get node JSON schema | Skills CLI |
-| `npx @n8n-as-code/skills list` | List all available nodes | Skills CLI |
-| VS Code: Refresh button | Pull workflows | Extension |
-| VS Code: Context menu | Fetch, pull, push workflows | Extension |
-
-### Configuration Files
-
-| File | Purpose | Location |
-|------|---------|----------|
-| `n8nac-config.json` | Project settings | Project root |
-| Credential store | API key storage | System keychain / credential store |
-
-## 🚀 Getting Started with Each Tool
-
-### 1. VS Code Extension (Recommended)
-1. Install from VS Code Marketplace
-2. Configure connection in extension settings
-3. Open workflow tree view from Activity Bar
-4. Use context menu actions (right-click) for fetch, pull, push operations
-
-### 2. CLI
-1. Install globally: `npm install -g n8nac`
-2. Initialize: `n8nac init`
-3. (Optional) Switch project: `n8nac switch`
-4. Sync workflows: `n8nac pull`
-4. Use commands as needed for automation
-
-### 3. AI Tools (via `n8nac skills`)
-1. Run with npx: `npx n8nac skills --help`
-2. Search for nodes: `npx n8nac skills search "query"`
-3. Get node schemas: `npx n8nac skills node-info nodeName`
-4. Use output for AI context or development
-
-### 4. Claude Plugin (For Claude Code)
-1. Add the marketplace: `/plugin marketplace add EtienneLescot/n8n-as-code`
-2. Install the plugin: `/plugin install n8n-as-code@n8nac-marketplace`
-3. Ask Claude high-level workflow requests
-4. See [Claude Plugin Guide](/docs/usage/claude-skill) for details
-
-### 5. OpenClaw Plugin
-1. Install the plugin: `openclaw plugins install @n8n-as-code/openclaw-plugin`
-2. Run the setup wizard: `openclaw n8nac:setup`
-3. Restart the gateway: `openclaw gateway restart`
-4. See the [OpenClaw Plugin Guide](/docs/usage/openclaw) for details
-
-## 🔧 Advanced Features
-
-### Multi-Instance Management
-Work with multiple n8n instances. Workflows are automatically organized by instance to avoid mixing files from different environments.
-
-### Git-like Sync Workflow
-Follow a git-like pattern for synchronization: list workflows to see status, pull changes you want, edit locally, then push changes back.
-
-Use `n8nac list` to check status, `n8nac pull` to download by workflow ID, and `n8nac push <path>` to upload the local workflow file you want to send.
-
-### Git Integration
-Store workflows as JSON files in Git for version control, collaboration, and deployment pipelines.
-
-### AI Assistant Support
-Generate context files that help AI coding assistants understand n8n workflow structure and provide accurate suggestions.
-
-## 📖 Next Steps
-
-Explore the specific guides for each tool:
-
-- **[VS Code Extension Guide](/docs/usage/vscode-extension)**: Learn about visual editing, git-like sync, and advanced features
-- **[CLI Guide](/docs/usage/cli)**: Master command-line usage, automation, and scripting
-- **[Skills CLI Guide](/docs/usage/skills)**: Use AI tools for node search and schema retrieval
-- **[OpenClaw Plugin Guide](/docs/usage/openclaw)**: Set up the OpenClaw-native plugin and workspace bootstrap flow
-
-## 🔍 Internal Components
-
-For information about internal components used by developers and AI assistants, see:
-
-- **[Contribution Guide](/docs/contribution)**: Architecture, development setup, and internal packages
-
-## 🆘 Troubleshooting
-
-Common issues and solutions:
-
-- **Connection issues**: Check n8n URL and API key
-- **File permission errors**: Check file and directory permissions
-- **Extension not working**: Restart VS Code or reinstall extension
-
-For more help, check the [Troubleshooting guide](/docs/troubleshooting) or [open an issue](https://github.com/EtienneLescot/n8n-as-code/issues).
-
----
-
-*Ready to dive deeper? Choose a tool below to get started with detailed guides.*
+| Action | VS Code | CLI |
+|---|---|---|
+| See workflow status | Tree view (auto) | `n8nac list` |
+| Pull a workflow | Right-click → Pull | `n8nac pull <id>` |
+| Push changes | Right-click → Push | `n8nac push <path>` |
+| Resolve conflict | Expand workflow → action buttons | `n8nac resolve <id> --mode keep-current\|keep-incoming` |
+| Generate AI context | Automatic on init | `n8nac update-ai` |
+| Search workflows | Find Workflow (title bar) | `n8nac find <query>` |

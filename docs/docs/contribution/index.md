@@ -1,18 +1,19 @@
 # Contribution Guide
 
-This section contains documentation for developers and contributors working on n8n-as-code.
+This section is for developers and contributors working on n8n-as-code internals.
 
-## 📚 Available Documentation
+For user-facing documentation, see [Usage](/docs/usage).
 
-### Architecture & Design
-- **[Architecture Overview](architecture.md)**: Understand the n8n-as-code monorepo architecture, component interactions, and design decisions.
+## Documentation
 
-### Internal Packages
-- **[Sync Engine](sync.md)**: Internal documentation for the sync engine embedded in `n8nac` and reused by the VS Code extension.
-- **[Skills Library](skills.md)**: Internal documentation for `@n8n-as-code/skills`, the internal library exposed through `n8nac skills`.
-- **[Claude Adapter](claude-skill.md)**: Internal documentation for the Claude adapter generated from the Skills library.
+- **[Architecture](architecture.md)** — monorepo structure, component interactions, design decisions
+- **[Sync Engine](sync.md)** — the sync engine embedded in `n8nac` and reused by the VS Code extension
+- **[CLI Package](cli.md)** — CLI architecture and command structure
+- **[VS Code Extension](vscode-extension.md)** — extension components and development
+- **[Skills & AI Tools](skills.md)** — the `@n8n-as-code/skills` library (node schemas, AI context generation, MCP server)
+- **[Claude Adapter](claude-skill.md)** — how the Claude plugin artifacts are generated from Skills
 
-## 🛠 Development Setup
+## Development Setup
 
 ### Prerequisites
 - Node.js 18+
@@ -20,84 +21,67 @@ This section contains documentation for developers and contributors working on n
 - Git
 
 ### Getting Started
-1. Clone the repository
-2. Run `npm install` in the root directory
-3. Build all packages with `npm run build`
-4. Run tests with `npm test`
-
-## 📦 Package Structure
-
-n8n-as-code is organized as a monorepo with the following packages:
-
-| Package | Purpose | Primary Users |
-|---------|---------|---------------|
-| **CLI** (`n8nac`) | Command-line interface + embedded sync engine | Terminal users, automation |
-| **Skills Library** (`@n8n-as-code/skills`) | Internal AI tooling library exposed through `n8nac skills` | AI assistants, developers |
-| **Transformer** (`@n8n-as-code/transformer`) | TypeScript workflow decorators, conversion, and code generation primitives | Workflow authors, package maintainers |
-| **VS Code Extension** (`n8n-as-code`) | Integrated editor experience built on top of `n8nac` and `@n8n-as-code/skills` | VS Code users |
-
-There is no longer a standalone `Claude Skill` package in `packages/`. Claude-specific distribution is generated from `packages/skills` as an adapter artifact.
-
-## 🧪 Testing
-
-### Test Structure
-- **Unit Tests**: Individual component testing with Jest
-- **Integration Tests**: End-to-end workflow tests
-- **Snapshot Tests**: Ensure generated files match expected format
-
-### Running Tests
 ```bash
-# Run all tests
+git clone https://github.com/EtienneLescot/n8n-as-code.git
+cd n8n-as-code
+npm install
+npm run build
+npm test
+```
+
+## Package Structure
+
+| Package | Published To | Purpose |
+|---|---|---|
+| **n8nac** (CLI) | npm | CLI + embedded sync engine |
+| **@n8n-as-code/skills** | npm | Internal AI tooling library exposed through `n8nac skills` |
+| **@n8n-as-code/transformer** | npm | TypeScript workflow decorators and conversion |
+| **n8n-as-code** (VS Code Extension) | VS Code Marketplace / Open VSX | Editor integration |
+| **Claude adapter** | GitHub / plugin distribution | Built from `packages/skills` |
+
+There is no standalone Claude Skill package — Claude-specific distribution is generated from `packages/skills` as an adapter artifact.
+
+## Building
+
+```bash
+# Full build
+npm run build
+
+# Watch mode (CLI)
+cd packages/cli && npm run watch
+
+# VS Code extension
+cd packages/vscode-extension && npm run build
+
+# Claude plugin artifacts
+npm run build:claude-plugin
+```
+
+## Testing
+
+```bash
+# All tests
 npm test
 
-# Run tests for specific package
+# Per package
 cd packages/skills && npm test
 cd packages/cli && npm test
 ```
 
-## 🔧 Building
+## OpenClaw Plugin Local Development
 
-### Development Build
+To iterate on the OpenClaw plugin from this monorepo:
+
 ```bash
-npm run build
+openclaw plugins install --link /home/etienne/repos/n8n-as-code/plugins/openclaw/n8n-as-code
+openclaw gateway restart
+openclaw plugins info n8nac
+openclaw n8nac:status
 ```
 
-### Watch Mode (Development)
-```bash
-# CLI watch mode
-cd packages/cli && npm run watch
+## Release Flow
 
-# Rebuild the VS Code extension
-cd packages/vscode-extension && npm run build
-```
-
-## 📦 Version Management
-
-n8n-as-code uses a custom commit-driven release flow with independent package versioning. Each package evolves independently while the release automation keeps internal dependencies aligned.
-
-### Current Package Versions
-
-Packages evolve **independently** with their own version numbers:
-- **@n8n-as-code/transformer**: `0.2.9`
-- **n8nac**: `0.11.4` (embeds sync engine, exposes `n8nac skills`)
-- **@n8n-as-code/skills**: `0.16.16` (internal library, consumed by `n8nac` and the VS Code extension)
-- **VS Code Extension**: `0.20.1`
-
-> **Note**: Each package has its own version number. The release workflow updates internal dependency pins automatically whenever an upstream package version changes.
-
-### Package Publication Strategy
-
-The project uses a custom commit-driven release flow.
-
-| Package | Published To | Version Source |
-|---------|-------------|----------------|
-| `@n8n-as-code/transformer` | NPM Registry | Conventional commits + dependency propagation |
-| `@n8n-as-code/skills` | NPM Registry | Conventional commits + dependency propagation |
-| `n8nac` | NPM Registry | Conventional commits + dependency propagation |
-| `n8n-as-code` (VS Code Extension) | VS Code Marketplace / Open VSX | `packages/vscode-extension/package.json` with even-minor stable lines and odd-minor prerelease lines |
-| Claude adapter artifacts | GitHub repository / plugin distribution flow | Built from `packages/skills/scripts/build-claude-adapter.js` |
-| `n8n-as-code-monorepo` (root) | Not published | Not released |
-| `docs` | Not published | Not released |
+The project uses a custom commit-driven release flow with independent package versioning. Each package evolves independently while the release automation keeps internal dependencies aligned. See the [release scripts](https://github.com/EtienneLescot/n8n-as-code/tree/main/scripts/release) for details.
 
 ### Release Workflow
 
